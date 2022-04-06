@@ -707,7 +707,6 @@ function App({ wsEndpoint, role }) {
               Show stream debug tools
             </label>
           )}
-          <Facts />
         </StyledDataContainer>
       </Stack>
       <Stack flex="1" scroll={true} minHeight={200}>
@@ -1421,18 +1420,6 @@ function AuthTokenLine({ id, role, name, onDelete }) {
       <strong>{name}</strong>: {role}{' '}
       <button onClick={handleDeleteClick}>revoke</button>
     </div>
-  )
-}
-
-function Facts() {
-  return (
-    <StyledFacts>
-      <BLM>Black Lives Matter.</BLM>
-      <TRM>
-        Trans rights are <em>human rights.</em>
-      </TRM>
-      <TIN>Technology is not neutral.</TIN>
-    </StyledFacts>
   )
 }
 
