@@ -16,6 +16,7 @@ import { State } from 'xstate'
 import styled, { createGlobalStyle } from 'styled-components'
 import { useHotkeys } from 'react-hotkeys-hook'
 import Color from 'color'
+import { DateTime } from 'luxon'
 
 import '../index.css'
 import { idxInBox } from '../geometry'
@@ -797,6 +798,21 @@ const Stack = styled.div`
   ${({ minHeight }) => minHeight && `min-height: ${minHeight}px`};
 `
 
+function StreamDurationClock({ startTime }) {
+  const [now, setNow] = useState(() => DateTime.now())
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setNow(DateTime.now())
+    }, 500)
+    return () => {
+      clearInterval(interval)
+    }
+  }, [startTime])
+  return (
+    <span>{now.diff(DateTime.fromMillis(startTime)).toFormat('hh:mm:ss')}</span>
+  )
+}
+
 function StreamDelayBox({
   role,
   delayState,
@@ -829,6 +845,9 @@ function StreamDelayBox({
         {!delayState.isStreamRunning && <span>stream stopped</span>}
         {delayState.isConnected && (
           <>
+            {delayState.startTime !== null && (
+              <StreamDurationClock startTime={delayState.startTime} />
+            )}
             <span>delay: {delayState.delaySeconds}s</span>
             {delayState.isStreamRunning && (
               <StyledButton
